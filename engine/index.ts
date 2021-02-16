@@ -1,5 +1,5 @@
-import Player from './Player';
+import { Player } from "./Player";
 
-const gamer1 = new Player(2, 'name', 'mail');
+const gamer1 = new Player(2, "name", "mail");
 
-console.log(gamer1.getId);
+console.log(gamer1.getName());
