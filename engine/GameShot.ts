@@ -1,62 +1,63 @@
 class GameShot {
-  private _id :number;
-  private _gameId: number | string;
-  private _playerId: number | string;
-  private _multiplicator: number; 
-  private _sector: number;
-  private _createdAt: Date;
+  private id :number;
+  private gameId: number | string;
+  private playerId: number | string;
+  private multiplicator: number; 
+  private sector: number;
+  private createdAt: Date;
 
-  constructor(gameId: number, playerId: number, ) {
-
-  }
-
-  get id() {
-    return this._id
-  }
-  
-  set id(val: number) {
-    this._id = val
-  }
-  
-  get gameId() {
-    return this._gameId
-  }
-  
-  set gameId(val: number | string) {
-    this._gameId = val
-  }
-  
-  get playerId() {
-    return this._playerId
-  }
-  
-  set playerId(val: number | string) {
-    this._playerId = val
-  }
-  
-  get multiplicator() {
-    return this._multiplicator
-  }
-  
-  set multiplicator(val: number) {
-    this._multiplicator = val
-  }
-  
-  get sector() {
-    return this._sector
-  }
-  
-  set sector(val: number) {
-    this._sector = val
-  }
-  
-  get createdAt() {
-    return this._createdAt
-  }
-  
-  set createdAt(val: Date) {
-    this._createdAt = val
+  constructor(gameId: number, playerId: number, multiplicator: number, sector: number) {
+    this.gameId = gameId;
+    this.playerId = playerId;
+    this.multiplicator = multiplicator;
+    this.sector = sector;
   }
 
+  public getId(): number {
+    return this.id;
+  }
 
+  public setId(id: number): void {
+    this.id = id;
+  }
+    
+  public getGameId() {
+    return this.gameId
+  }
+  
+  public setGameId(val: number | string) {
+    this.gameId = val
+  }
+  
+  public getPlayerId() {
+    return this.playerId
+  }
+  
+  public setPlayerId(val: number | string) {
+    this.playerId = val
+  }
+  
+  public getMultiplicator() {
+    return this.multiplicator
+  }
+  
+  public setMultiplicator(val: number) {
+    this.multiplicator = val
+  }
+  
+  public getSector() {
+    return this.sector
+  }
+  
+  public setSector(val: number) {
+    this.sector = val
+  }
+  
+  public getCreatedAt() {
+    return this.createdAt
+  }
+  
+  public setCreatedAt(val: Date) {
+    this.createdAt = val
+  }
 }
