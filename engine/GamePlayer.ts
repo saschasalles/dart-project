@@ -1,5 +1,7 @@
 class GamePlayer {
     private id?: number;
+    private name: string;
+    private email: string;
     private playerId: number;
     private gameId: number;
     private remainingShots: number;
@@ -10,7 +12,9 @@ class GamePlayer {
     private createdAt: Date;
 
     constructor(id: number, name: string, email: string) {
-        
+        this.id = id;
+        this.name = name;
+        this.email = email;
     }
 
     public getId(): number {
@@ -83,5 +87,22 @@ class GamePlayer {
 
     public setCreatedAt(createdAt: Date): void {
         this.createdAt = createdAt;
+    }
+
+    public getEmail(): string {
+        return this.email;
+    }
+
+    public setEmail(email: string): void {
+        this.email = email;
+    }
+
+    
+    public getName(): string {
+        return this.name;
+    }
+
+    public setName(name: string): void {
+        this.name = name;
     }
 }
