@@ -1,4 +1,6 @@
 export interface PlayerDTO {
-    id: string;
-    name: string;
-  }
+  name: string;
+  gameWin: number;
+  gameLost: number;
+  createdAt: Date;
+}
