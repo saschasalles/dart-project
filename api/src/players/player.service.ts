@@ -17,7 +17,6 @@ export class PlayerService {
   }
 
   async create(data: PlayerDTO) {
-    console.log(data)
     data.createdAt = new Date();
     data.gameWin = 0;
     data.gameLost = 0;
