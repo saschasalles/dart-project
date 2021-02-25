@@ -1,4 +1,4 @@
-class Player {
+export class Player {
     private id: string;
     private name: string;
     private gameWin: number;

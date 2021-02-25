@@ -1,4 +1,4 @@
-class Mode1 extends GameMode {
+class Mode2 extends GameMode {
 
   
 }
