@@ -7,6 +7,9 @@ export class PlayerEntity {
     @Column('varchar', { length: 500, unique: true})
     name: string
 
+    @Column('varchar', { length: 500, unique: true})
+    email: string
+
     @Column()
     gameWin: number
 
