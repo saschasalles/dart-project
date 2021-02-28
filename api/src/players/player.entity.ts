@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import Game from '../game/game.entity';
 
 @Entity('player')
-export class PlayerEntity {
+export default class PlayerEntity {
 	@PrimaryGeneratedColumn('uuid') id: string
 
     @Column('varchar', { length: 500, unique: true})
@@ -18,4 +19,7 @@ export class PlayerEntity {
 
     @Column()
     createdAt: Date
+
+    @ManyToOne(() => Game, (game: Game) => game.players)
+    public game: Game;
 }

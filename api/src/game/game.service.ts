@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GameMode } from '../enums/GameMode';
 import { GameStatus } from '../enums/GameStatus';
-import { GameEntity } from './game.entity';
+import GameEntity from './game.entity';
 import { GameDTO } from './game.dto';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class GameService {
   async create(data: GameDTO) {
     // @TODO : Implement UI GameMode choice
 
-    data.currentPlayerId = "a747f061-d776-44ee-abd8-b68d41c5436a";
+    data.currentPlayerId = null;
     data.mode = GameMode.mode1;
     data.status = GameStatus.started;
     data.createdAt = new Date();
@@ -41,5 +41,9 @@ export class GameService {
   async destroy(id: string) {
     await this.gameRepository.delete({ id });
     return { deleted: true };
+  }
+
+  async getPlayersInGame(id: string) {
+    return await this.gameRepository.findOne(id, { relations: ['players'] });
   }
 }

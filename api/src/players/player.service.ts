@@ -2,7 +2,7 @@ import { Injectable, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { PlayerEntity } from './player.entity';
+import PlayerEntity from './player.entity';
 import { PlayerDTO } from './player.dto';
 
 @Injectable()
