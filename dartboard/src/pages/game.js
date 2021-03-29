@@ -17,7 +17,7 @@ export function Game(props) {
     axios
       .post("http://localhost:3000/games", game)
       .then(function (response) {
-        console.log(response);
+  
       })
       .catch(function (error) {
         console.log(error);
