@@ -1,5 +1,5 @@
 import { React, useEffect } from "react";
-import { PlayerForm } from "../components/form";
+import { GameConfig } from "../components/gameConfig";
 import { Header } from "semantic-ui-react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
@@ -27,7 +27,7 @@ export function Game(props) {
   return (
     <div>
       <Header h1> {props.title} </Header>
-      <PlayerForm />
+      <GameConfig  />
     </div>
   );
 }
