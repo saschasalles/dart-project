@@ -3,8 +3,9 @@ import { DartBoard } from "./components/dartboard";
 import { Container, Header, Segment } from "semantic-ui-react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Home from "./pages/home";
+import Game from "./pages/game";
 import Layout from "./components/layout";
-import { Game } from "./pages/game";
+import { GameConfig } from "./components/gameConfig";
 
 function App() {
   return (
@@ -16,13 +17,22 @@ function App() {
               <Home />
             </Route>
             <Route path="/around-the-world">
-              <Game title="Around the Word" />
+              <GameConfig title="Around the Word" />
             </Route>
             <Route path="/301">
-              <Game title="301" />
+              <GameConfig title="301" />
             </Route>
             <Route path="/cricket">
+              <GameConfig title="Cricket" />
+            </Route>
+            <Route path="/game/cricket">
               <Game title="Cricket" />
+            </Route>
+            <Route path="/game/301">
+              <Game title="301" />
+            </Route>
+            <Route path="/game/around-the-world">
+              <Game title="Around The World" />
             </Route>
           </Switch>
         </Layout>

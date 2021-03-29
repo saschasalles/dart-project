@@ -1,1 +1,8 @@
 
+svg {
+  pointer-events: none;
+}
+
+path{
+  pointer-events: auto;
+}
