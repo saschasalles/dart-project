@@ -9,7 +9,7 @@ import {
   Segment,
   Message,
   Confirm,
-  Header
+  Header,
 } from "semantic-ui-react";
 import { AddPlayerForm } from "./addPlayerForm";
 
@@ -23,7 +23,7 @@ export function GameConfig(props) {
 
   const location = useLocation();
   const pathName = location.pathname.replace("/", "");
-  const gameLink = "/game/" + pathName
+  const gameLink = "/game/" + pathName;
 
   const handleDelete = (evt, index) => {
     const newPlayers = [...players];
@@ -68,7 +68,17 @@ export function GameConfig(props) {
       mode: pathName,
     };
 
-    axios.post("http://localhost:3000/games", game).catch(function (error) {
+    axios.post("http://localhost:3000/games", game)
+    .then(res => {
+      const playersId = getAllPlayersId();
+      axios.post(
+        `http://localhost:3000/games/${res.data.data.id}/players`, 
+        {
+          players: playersId
+        }
+      )
+    })
+    .catch(function (error) {
       console.log(error);
     });
   };
@@ -84,12 +94,12 @@ export function GameConfig(props) {
   };
 
   const checkNumberPlayers = () => {
-    let res = false;
+    let res = true;
     if (players.length >= 2) {
-      res = true;
+      res = false;
     }
     return res;
-  }
+  };
 
   const closeModal = () => {
     setModalIsOpen(false);
@@ -100,6 +110,15 @@ export function GameConfig(props) {
     handleDeletePlayer(player);
     setConfirmOpen(false);
   };
+
+  const getAllPlayersId = () => {
+    let playersId = [];
+    players.map(player => {
+      console.log(typeof player.id)
+      playersId.push(player.id)
+    })
+    return playersId;
+  }
 
   const UserList = () => {
     return (

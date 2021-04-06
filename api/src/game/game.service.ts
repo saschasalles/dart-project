@@ -1,16 +1,22 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { GameMode } from '../enums/GameMode';
 import { GameStatus } from '../enums/GameStatus';
 import GameEntity from './game.entity';
+import PlayerEntity from '../players/player.entity';
 import { GameDTO } from './game.dto';
+import { AddUserInGameDTO } from './addUserInGame.dto';
+import { v4 as uuidv4 } from "uuid";
+
 
 @Injectable()
 export class GameService {
   constructor(
     @InjectRepository(GameEntity)
     private gameRepository: Repository<GameEntity>,
+    @InjectRepository(PlayerEntity)
+    private playerRepository: Repository<PlayerEntity>,
   ) {}
 
   async showAll() {
@@ -18,12 +24,11 @@ export class GameService {
   }
 
   async create(data: GameDTO) {
-    // @TODO : Implement UI GameMode choice
-
     data.currentPlayerId = null;
     data.mode = GameMode.mode1;
-    data.status = GameStatus.started;
+    data.status = GameStatus.draft;
     data.createdAt = new Date();
+    data.id = uuidv4();
     const user = this.gameRepository.create(data);
     await this.gameRepository.save(data);
     return user;
@@ -45,5 +50,20 @@ export class GameService {
 
   async getPlayersInGame(id: string) {
     return await this.gameRepository.findOne(id, { relations: ['players'] });
+  }
+
+  async addPlayersInGame(id: string, dto: AddUserInGameDTO) {
+    const playersId = dto.players;
+
+    const game = await this.gameRepository.findOne({ where: { id: id } });
+    
+    const playersToAdd = await this.playerRepository.find({
+      where: { id: In(playersId) }
+    });
+
+    console.log('playerstoadd :', playersToAdd);
+    
+    game.players = playersToAdd;
+    this.gameRepository.save(game);
   }
 }

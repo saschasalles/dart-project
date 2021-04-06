@@ -6,8 +6,6 @@ import { GameShot } from "../models/GameShot";
 class Mode1 extends GameMode {
   public dummyGameShot = [12, 2];
   private shot: number = NaN;
-  
-
 
   initGame() {
     while (this.currentGame.getStatus() == "started") {

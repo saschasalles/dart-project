@@ -11,6 +11,9 @@ import {
 
 import { GameService } from './game.service'
 import { GameDTO } from './game.dto';
+import { AddUserInGameDTO } from './addUserInGame.dto';
+import { ParseArrayPipe } from '@nestjs/common';
+
 
 @Controller('games')
 export class GameController {
@@ -66,4 +69,14 @@ export class GameController {
       data: await this.GameService.getPlayersInGame(id),
     };
   }
+  
+  @Post(':id/players')
+    async create(@Param('id') id: string, @Body() addUserInGameDTO: AddUserInGameDTO) {
+      this.GameService.addPlayersInGame(id, addUserInGameDTO);
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Users added in game succesfully',
+      };
+    }
 }

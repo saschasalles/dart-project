@@ -13,8 +13,6 @@ import { Game } from "./models/Game";
 
 
 export abstract class GameMode {
-  
-
 
   public currentGame: Game;
   public req = ["Mon jeu", "around-the-world"]

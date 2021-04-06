@@ -1,5 +1,4 @@
 import "./App.css";
-import { DartBoard } from "./components/dartboard";
 import { Container, Header, Segment } from "semantic-ui-react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Home from "./pages/home";
