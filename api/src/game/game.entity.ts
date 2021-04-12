@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryColumn, OneToMany} from 'typeorm';
-import Player from '../players/player.entity';
+import GamePlayer from '../game-player/game-player.entity';
 
 @Entity('game')
 export default class GameEntity {
@@ -23,6 +23,6 @@ export default class GameEntity {
   @Column()
   createdAt: Date
 
-  @OneToMany(() => Player, (player: Player) => player.game)
-  public players: Player[];
+  @OneToMany(() => GamePlayer, (gamePlayer: GamePlayer) => gamePlayer.game)
+  public gamePlayers: GamePlayer[];
 }

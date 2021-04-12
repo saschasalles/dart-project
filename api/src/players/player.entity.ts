@@ -1,5 +1,4 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import Game from '../game/game.entity';
 
 @Entity('player')
 export default class PlayerEntity {
@@ -19,7 +18,4 @@ export default class PlayerEntity {
 
     @Column()
     createdAt: Date
-
-    @ManyToOne(() => Game, (game: Game) => game.players)
-    public game: Game;
 }

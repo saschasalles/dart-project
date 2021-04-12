@@ -4,9 +4,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PlayerModule } from './players/player.module';
 import { GameModule } from './game/game.module';
+import { GamePlayerModule } from './game-player/game-player.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), PlayerModule, GameModule],
+  imports: [
+    TypeOrmModule.forRoot(),
+    PlayerModule,
+    GameModule,
+    GamePlayerModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
