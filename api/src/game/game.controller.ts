@@ -80,6 +80,7 @@ export class GameController {
       return {
         statusCode: HttpStatus.OK,
         message: 'Users added in game succesfully',
+        data: id
       };
     }
 }

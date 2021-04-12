@@ -24,15 +24,6 @@ function App() {
             <Route path="/cricket">
               <GameConfig title="Cricket" />
             </Route>
-            <Route path="/game/cricket">
-              <Game title="Cricket" />
-            </Route>
-            <Route path="/game/301">
-              <Game title="301" />
-            </Route>
-            <Route path="/game/around-the-world">
-              <Game title="Around The World" />
-            </Route>
           </Switch>
         </Layout>
       </Router>

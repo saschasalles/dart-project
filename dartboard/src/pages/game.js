@@ -1,4 +1,4 @@
-import { React, useEffect } from "react";
+import { React, useEffect, useState } from "react";
 import { GameConfig } from "../components/gameConfig";
 import { Header, Grid } from "semantic-ui-react";
 import { useLocation } from "react-router-dom";
@@ -16,7 +16,16 @@ export default function Game(props) {
             <Target />
           </Grid.Column>
           <Grid.Column width={5}>
-            <PlayerCard playerName="toto" playerTurn="you" score="301" />
+            {props.gamePlayers.map((gamePlayer) => {
+                  return (
+                    <PlayerCard
+                      playerName={"tt"}
+                      playerTurn="you"
+                      score={gamePlayer.score}
+                    />
+                  )
+              })
+              }
           </Grid.Column>
         </Grid.Row>
       </Grid>

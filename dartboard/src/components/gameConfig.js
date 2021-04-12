@@ -12,14 +12,17 @@ import {
   Header,
 } from "semantic-ui-react";
 import { AddPlayerForm } from "./addPlayerForm";
+import Game from "../pages/game";
 
 import axios from "axios";
 
 export function GameConfig(props) {
   const [players, setPlayers] = useState([]);
   const [dbPlayers, setDbPlayers] = useState([]);
+  const [gamePlayers, setGamePlayers] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [gameConfigured, setGameConfigured] = useState(false);
 
   const location = useLocation();
   const pathName = location.pathname.replace("/", "");
@@ -68,18 +71,26 @@ export function GameConfig(props) {
       mode: pathName,
     };
 
-    axios.post("http://localhost:3000/games", game)
-    .then(res => {
+    axios.post("http://localhost:3000/games", game).then((res) => {
       const playersId = getAllPlayersId();
-      axios.post(
-        `http://localhost:3000/games/${res.data.data.id}/players`, 
-        {
-          players: playersId
-        }
-      )
-    })
-    .catch(function (error) {
-      console.log(error);
+      axios
+        .post(`http://localhost:3000/games/${res.data.data.id}/players`, {
+          players: playersId,
+        })
+        .then((res) => {
+          axios
+            .get(`http://localhost:3000/games/${res.data.data}/players`)
+            .then((res) => {
+              // @TODO : récupérer les gameplayers
+              setGamePlayers(res.data.data);
+            });
+        })
+        .then(() => {
+          setGameConfigured(true);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     });
   };
 
@@ -113,12 +124,11 @@ export function GameConfig(props) {
 
   const getAllPlayersId = () => {
     let playersId = [];
-    players.map(player => {
-      console.log(typeof player.id)
-      playersId.push(player.id)
-    })
+    players.map((player) => {
+      playersId.push(player.id);
+    });
     return playersId;
-  }
+  };
 
   const UserList = () => {
     return (
@@ -155,70 +165,74 @@ export function GameConfig(props) {
     );
   };
 
-  if (dbPlayers.length > 0) {
-    return (
-      <div>
-        <Header h1> {props.title} </Header>
-        <Segment>
-          <List selection>
-            {players.length == 0 && (
-              <Message>
-                <p>Veuillez ajouter au moins 2 joueurs </p>
-              </Message>
-            )}
+  if (!gameConfigured) {
+    if (dbPlayers.length > 0) {
+      return (
+        <div>
+          <Header h1> {props.title} </Header>
+          <Segment>
+            <List selection>
+              {players.length == 0 && (
+                <Message>
+                  <p>Veuillez ajouter au moins 2 joueurs </p>
+                </Message>
+              )}
 
-            {players.map((player, index) => (
-              <List.Item verticalAlign="bottom">
-                <List.Content key={player.id} floated="right">
-                  <Button
-                    key={player.id}
-                    color="red"
-                    circular
-                    icon="trash alternate"
-                    verticalAlign="middle"
-                    onClick={(e, index) => handleDelete()}
-                  ></Button>
-                </List.Content>
-                <List.Content>
-                  Joueur {index + 1} : {player.name}
-                </List.Content>
-              </List.Item>
-            ))}
-          </List>
-        </Segment>
+              {players.map((player, index) => (
+                <List.Item verticalAlign="bottom">
+                  <List.Content key={player.id} floated="right">
+                    <Button
+                      key={player.id}
+                      color="red"
+                      circular
+                      icon="trash alternate"
+                      verticalAlign="middle"
+                      onClick={(e, index) => handleDelete()}
+                    ></Button>
+                  </List.Content>
+                  <List.Content>
+                    Joueur {index + 1} : {player.name}
+                  </List.Content>
+                </List.Item>
+              ))}
+            </List>
+          </Segment>
 
-        <Segment>{UserList()}</Segment>
+          <Segment>{UserList()}</Segment>
 
-        <AddPlayerForm
-          open={modalIsOpen}
-          onClose={() => closeModal()}
-          onOpen={() => setModalIsOpen(true)}
-        />
+          <AddPlayerForm
+            open={modalIsOpen}
+            onClose={() => closeModal()}
+            onOpen={() => setModalIsOpen(true)}
+          />
 
-        <Button
-          as={Link}
-          to={gameLink}
-          disabled={checkNumberPlayers()}
-          color="purple"
-          icon="game"
-          content="Jouer"
-          onClick={() => handleCreateGame()}
-        />
-      </div>
-    );
+          <Button
+            disabled={checkNumberPlayers()}
+            color="purple"
+            icon="game"
+            content="Jouer"
+            onClick={() => handleCreateGame()}
+          />
+        </div>
+      );
+    } else {
+      return (
+        <>
+          <Header h1> {props.title} </Header>
+          <Message>
+            <p>Veuillez ajouter au moins 2 joueurs </p>
+          </Message>
+          <AddPlayerForm
+            open={modalIsOpen}
+            onClose={() => closeModal()}
+            onOpen={() => setModalIsOpen(true)}
+          />
+        </>
+      );
+    }
   } else {
     return (
-      <>
-        <Header h1> {props.title} </Header>
-        <Message>
-          <p>Veuillez ajouter au moins 2 joueurs </p>
-        </Message>
-        <AddPlayerForm
-          open={modalIsOpen}
-          onClose={() => closeModal()}
-          onOpen={() => setModalIsOpen(true)}
-        />
-      </>
+      <Game title={props.title} players={players} gamePlayers={gamePlayers} />
     );
   }
 }

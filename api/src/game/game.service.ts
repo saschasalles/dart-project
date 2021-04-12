@@ -54,7 +54,11 @@ export class GameService {
   }
 
   async getPlayersInGame(id: string) {
-    return await this.gameRepository.findOne(id, { relations: ['gamePlayers'] });
+    const game = this.gameRepository.findOne(id, {
+      relations: ['gamePlayers'],
+    });
+
+    return (await game).gamePlayers;
   }
 
   async addPlayersInGame(id: string, dto: AddUserInGameDTO) {
