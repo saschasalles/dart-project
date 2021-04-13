@@ -82,5 +82,13 @@ export class GameController {
         message: 'Users added in game succesfully',
         data: id
       };
-    }
+  }
+  
+  @Get(':id/allplayers')
+  async getAllPlayersInGame(@Param('id') id: string) {
+    return {
+      statusCode: HttpStatus.OK,
+      data: await this.GameService.getAllPlayersInGame(id),
+    };
+  }
 }

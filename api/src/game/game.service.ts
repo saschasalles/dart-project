@@ -5,6 +5,7 @@ import { GameMode } from '../enums/GameMode';
 import { GameStatus } from '../enums/GameStatus';
 import GameEntity from './game.entity';
 import GamePlayerEntity from '../game-player/game-player.entity';
+import PlayerEntity from '../players/player.entity';
 import { GameDTO } from './game.dto';
 import { AddUserInGameDTO } from './addUserInGame.dto';
 import { GamePlayerService } from '../game-player/game-player.service';
@@ -19,6 +20,8 @@ export class GameService {
   constructor(
     @InjectRepository(GameEntity)
     private gameRepository: Repository<GameEntity>,
+    @InjectRepository(PlayerEntity)
+    private playerRepository: Repository<PlayerEntity>,
     gamePlayerService: GamePlayerService,
   ) {
     this.gamePlayerService = gamePlayerService;
@@ -54,11 +57,28 @@ export class GameService {
   }
 
   async getPlayersInGame(id: string) {
-    const game = this.gameRepository.findOne(id, {
+    // const game = this.gameRepository.findOne(id, {
+    //   relations: ['gamePlayers'],
+    // });
+    const game = await this.gameRepository.findOne({
+      where: { id: id },
       relations: ['gamePlayers'],
     });
+    return game.gamePlayers;
+  }
 
-    return (await game).gamePlayers;
+  async getAllPlayersInGame(id: string) {
+    const game = await this.gameRepository.findOne({
+      where: { id: id },
+      relations: ['gamePlayers'],
+    });
+    const gamePlayers = game.gamePlayers;
+    let playersId = [];
+
+    gamePlayers.map((gamePlayer) => playersId.push(gamePlayer.playerId));
+    const players = await this.playerRepository.find({ id: In(playersId) });
+
+    return players;
   }
 
   async addPlayersInGame(id: string, dto: AddUserInGameDTO) {
