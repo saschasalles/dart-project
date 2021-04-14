@@ -1,8 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, ObjectIdColumn, ObjectID } from 'typeorm';
 
 @Entity('player')
 export default class PlayerEntity {
-	@PrimaryGeneratedColumn('uuid') id: string
+	@ObjectIdColumn() id: ObjectID
 
     @Column('varchar', { length: 500, unique: true})
     name: string

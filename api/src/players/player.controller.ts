@@ -8,9 +8,10 @@ import {
     Param,
     HttpStatus,
   } from '@nestjs/common';
-
+  import { ObjectID } from 'typeorm';
 import { PlayerService } from './player.service'
 import { PlayerDTO } from './player.dto';
+const { ObjectId } = require('mongodb');
 
 @Controller('players')
 export class PlayerController {
@@ -34,25 +35,28 @@ export class PlayerController {
   }
 
   @Get(':id')
-  async readPlayer(@Param('id') id: string) {
+  async readPlayer(@Param('id') id: ObjectID) {
+    const _id = ObjectId(id);
     return {
       statusCode: HttpStatus.OK,
-      data: await this.playerService.read(id),
+      data: await this.playerService.read(_id),
     };
   }
 
   @Patch(':id')
-  async updatePlayer(@Param('id') id: string, @Body() data: Partial<PlayerDTO>) {
+  async updatePlayer(@Param('id') id: ObjectID, @Body() data: Partial<PlayerDTO>) {
+    const _id = ObjectId(id);
     return {
       statusCode: HttpStatus.OK,
       message: 'Player update successfully',
-      data: await this.playerService.update(id, data),
+      data: await this.playerService.update(_id, data),
     };
   }
 
   @Delete(':id')
-  async deletePlayer(@Param('id') id: string) {
-    await this.playerService.destroy(id);
+  async deletePlayer(@Param('id') id: ObjectID) {
+    const _id = ObjectId(id);
+    await this.playerService.destroy(_id);
     return {
       statusCode: HttpStatus.OK,
       message: 'Player deleted successfully',

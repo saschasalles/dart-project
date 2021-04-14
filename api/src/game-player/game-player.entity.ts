@@ -1,15 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, ObjectIdColumn, ObjectID, ManyToOne } from 'typeorm';
 import Game from '../game/game.entity';
 
 @Entity('gamePlayer')
 export default class GamePlayer {
-  @PrimaryGeneratedColumn('uuid') id: string;
+  @ObjectIdColumn() id: ObjectID
+  
+  @ObjectIdColumn()
+  playerId: ObjectID;
 
-  @Column()
-  playerId: string;
-
-  @Column()
-  gameId: string;
+  @ObjectIdColumn()
+  gameId: ObjectID;
 
   @Column({
     nullable: true,

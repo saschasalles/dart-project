@@ -12,6 +12,8 @@ import {
 import { GameService } from './game.service'
 import { GameDTO } from './game.dto';
 import { AddUserInGameDTO } from './addUserInGame.dto';
+import { ObjectID } from 'typeorm';
+const { ObjectId } = require('mongodb');
 import { ParseArrayPipe } from '@nestjs/common';
 
 
@@ -38,25 +40,28 @@ export class GameController {
   }
 
   @Get(':id')
-  async readGame(@Param('id') id: string) {
+  async readGame(@Param('id') id: ObjectID) {
+    const _id = ObjectId(id);
     return {
       statusCode: HttpStatus.OK,
-      data: await this.GameService.read(id),
+      data: await this.GameService.read(_id),
     };
   }
 
   @Patch(':id')
-  async updateGame(@Param('id') id: string, @Body() data: Partial<GameDTO>) {
+  async updateGame(@Param('id') id: ObjectID, @Body() data: Partial<GameDTO>) {
+    const _id = ObjectId(id);
     return {
       statusCode: HttpStatus.OK,
       message: 'Game update successfully',
-      data: await this.GameService.update(id, data),
+      data: await this.GameService.update(_id, data),
     };
   }
 
   @Delete(':id')
-  async deleteGame(@Param('id') id: string) {
-    await this.GameService.destroy(id);
+  async deleteGame(@Param('id') id: ObjectID) {
+    const _id = ObjectId(id);
+    await this.GameService.destroy(_id);
     return {
       statusCode: HttpStatus.OK,
       message: 'Game deleted successfully',
@@ -64,31 +69,33 @@ export class GameController {
   }
 
   @Get(':id/players')
-  async getPlayersInGame(@Param('id') id: string) {
+  async getPlayersInGame(@Param('id') id: ObjectID) {
+    const _id = ObjectId(id);
     return {
       statusCode: HttpStatus.OK,
-      data: await this.GameService.getPlayersInGame(id),
+      data: await this.GameService.getPlayersInGame(_id),
     };
   }
 
   // Create Game Player
   
-  @Post(':id/players')
-    async create(@Param('id') id: string, @Body() addUserInGameDTO: AddUserInGameDTO) {
-      this.GameService.addPlayersInGame(id, addUserInGameDTO);
+  @Post(':name/players')
+    async create(@Param('name') name: string, @Body() addUserInGameDTO: AddUserInGameDTO) {
+      this.GameService.addPlayersInGame(name, addUserInGameDTO);
 
       return {
         statusCode: HttpStatus.OK,
         message: 'Users added in game succesfully',
-        data: id
+        data: name
       };
   }
   
   @Get(':id/allplayers')
-  async getAllPlayersInGame(@Param('id') id: string) {
+  async getAllPlayersInGame(@Param('id') id: ObjectID) {
+    const _id = ObjectId(id);
     return {
       statusCode: HttpStatus.OK,
-      data: await this.GameService.getAllPlayersInGame(id),
+      data: await this.GameService.getAllPlayersInGame(_id),
     };
   }
 }

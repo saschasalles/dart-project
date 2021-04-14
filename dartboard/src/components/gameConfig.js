@@ -67,31 +67,32 @@ export function GameConfig(props) {
 
   const handleCreateGame = () => {
     const game = {
-      name: Math.random() * 3,
+      name: Math.random().toString(20).substr(2, 10),
       mode: pathName,
     };
 
     axios.post("http://localhost:3000/games", game).then((res) => {
       const playersId = getAllPlayersId();
       axios
-        .post(`http://localhost:3000/games/${res.data.data.id}/players`, {
+        .post(`http://localhost:3000/games/${res.data.data.name}/players`, {
           players: playersId,
         })
-        .then((res) => {
-          axios
-            .get(`http://localhost:3000/games/${res.data.data}/players`)
-            .then((res) => {
-              // @TODO : récupérer les gameplayers
-              setGamePlayers(res.data.data);
-            });
-        })
-        .then(() => {
-          setGameConfigured(true);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    });
+        // .then((res) => {
+        //   axios
+        //     .get(`http://localhost:3000/games/${res.data.data}/players`)
+        //     .then((res) => {
+        //       // @TODO : récupérer les gameplayers
+        //       setGamePlayers(res.data.data);
+        //     });
+        // })
+        // .then(() => {
+        //   setGameConfigured(true);
+        // })
+        // .catch(function (error) {
+        //   console.log(error);
+        // });
+    }).catch(e => console.log('ERROR : ', e)
+    );
   };
 
   const checkId = (playerId) => {

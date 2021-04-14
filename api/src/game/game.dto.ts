@@ -1,11 +1,11 @@
 import { GameMode } from '../enums/GameMode';
 import { GameStatus } from '../enums/GameStatus';
+import { ObjectID } from 'typeorm';
 
 export interface GameDTO {
-  id: string;
   mode: GameMode;
   name: string;
-  currentPlayerId: string | null;
+  currentPlayerId: ObjectID | null;
   status: GameStatus;
   createdAt: Date;
 }

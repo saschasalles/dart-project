@@ -1,6 +1,6 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, ObjectID } from 'typeorm';
 
 import PlayerEntity from './player.entity';
 import { PlayerDTO } from './player.dto';
@@ -25,16 +25,16 @@ export class PlayerService {
     return user;
   }
 
-  async read(id: string) {
-    return await this.playerRepository.findOne({ where: { id: id } });
+  async read(id: ObjectID) {
+    return await this.playerRepository.findOne({ where: { _id: id } });
   }
 
-  async update(id: string, data: Partial<PlayerDTO>) {
+  async update(id: ObjectID, data: Partial<PlayerDTO>) {
     await this.playerRepository.update({ id }, data);
     return await this.playerRepository.findOne({ id });
   }
 
-  async destroy(id: string) {
+  async destroy(id: ObjectID) {
     await this.playerRepository.delete({ id });
     return { deleted: true };
   }

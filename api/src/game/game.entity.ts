@@ -1,21 +1,18 @@
-import { Entity, Column, PrimaryColumn, OneToMany} from 'typeorm';
+import { Entity, Column, PrimaryColumn , ObjectIdColumn, ObjectID, OneToMany} from 'typeorm';
 import GamePlayer from '../game-player/game-player.entity';
 
 @Entity('game')
 export default class GameEntity {
-  @PrimaryColumn()
-  id: string
-
+  @ObjectIdColumn() id: ObjectID
+  
   @Column()
   mode: string
 
   @Column('varchar', { length: 500, unique: true})
   name: string
 
-  @Column({
-    nullable: true,
-  })
-  currentPlayerId: string | null
+  @ObjectIdColumn()
+  currentPlayerId: ObjectID | null
 
   @Column()
   status: string

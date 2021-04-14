@@ -11,8 +11,6 @@ export const AddPlayerForm = (props) => {
   const [values, setValues] = useState(initialValues);
 
   const handleAddPlayer = (player) => {
-    console.log(player);
-
     axios
       .post("http://localhost:3000/players", player)
       .then((res) => {
