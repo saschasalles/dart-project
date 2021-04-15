@@ -1,15 +1,16 @@
 import { Entity, Column, ObjectIdColumn, ObjectID, ManyToOne } from 'typeorm';
+import GameEntity from '../game/game.entity';
 import Game from '../game/game.entity';
 
 @Entity('gamePlayer')
 export default class GamePlayer {
   @ObjectIdColumn() id: ObjectID
   
-  @ObjectIdColumn()
-  playerId: ObjectID;
+  @Column()
+  playerId: string;
 
-  @ObjectIdColumn()
-  gameId: ObjectID;
+  @Column()
+  gameId: string;
 
   @Column({
     nullable: true,
@@ -34,7 +35,7 @@ export default class GamePlayer {
 
   @Column()
   createdAt: Date;
-  
-  @ManyToOne(() => Game, (game: Game) => game.gamePlayers)
-  public game: Game;
+
+  // @ManyToOne(() => Game, (game: Game) => game.gamePlayers)
+  // public game: Game;
 }

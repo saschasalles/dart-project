@@ -20,6 +20,9 @@ export default class GameEntity {
   @Column()
   createdAt: Date
 
-  @OneToMany(() => GamePlayer, (gamePlayer: GamePlayer) => gamePlayer.game)
-  public gamePlayers: GamePlayer[];
+  @Column(type => GamePlayer)
+  gamePlayers: GamePlayer[]
+
+  // @OneToMany(() => GamePlayer, (gamePlayer: GamePlayer) => gamePlayer.game)
+  // public gamePlayers: GamePlayer[];
 }

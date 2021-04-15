@@ -24,6 +24,10 @@ function App() {
             <Route path="/cricket">
               <GameConfig title="Cricket" />
             </Route>
+
+            <Route path="/game/:id">
+              <Game />
+            </Route>
           </Switch>
         </Layout>
       </Router>

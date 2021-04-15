@@ -31,11 +31,12 @@ export class GameController {
   }
 
   @Post()
-  async createGame(@Body() data: GameDTO) {
+  async createGame(@Body('game') data: GameDTO, @Body() addUserInGameDTO: AddUserInGameDTO) {
+    const game = await this.GameService.create(data, addUserInGameDTO);
     return {
       statusCode: HttpStatus.OK,
       message: 'Game added successfully',
-      data: await this.GameService.create(data),
+      data: game,
     };
   }
 
@@ -69,33 +70,18 @@ export class GameController {
   }
 
   @Get(':id/players')
-  async getPlayersInGame(@Param('id') id: ObjectID) {
-    const _id = ObjectId(id);
+  async getPlayersInGame(@Param('id') id: string) {
     return {
       statusCode: HttpStatus.OK,
-      data: await this.GameService.getPlayersInGame(_id),
+      data: await this.GameService.getPlayersInGame(id),
     };
   }
-
-  // Create Game Player
   
-  @Post(':name/players')
-    async create(@Param('name') name: string, @Body() addUserInGameDTO: AddUserInGameDTO) {
-      this.GameService.addPlayersInGame(name, addUserInGameDTO);
-
-      return {
-        statusCode: HttpStatus.OK,
-        message: 'Users added in game succesfully',
-        data: name
-      };
-  }
-  
-  @Get(':id/allplayers')
-  async getAllPlayersInGame(@Param('id') id: ObjectID) {
-    const _id = ObjectId(id);
+  @Get(':id/gameplayers')
+  async getGamePlayersInGame(@Param('id') id: string) {
     return {
       statusCode: HttpStatus.OK,
-      data: await this.GameService.getAllPlayersInGame(_id),
+      data: await this.GameService.getGamePlayersInGame(id),
     };
   }
 }

@@ -13,6 +13,7 @@ export default function Home() {
       <Button as={Link} to="/around-the-world" content="Around the world"/>
       <Button as={Link} to="/301" content="301" />
       <Button as={Link} to="/cricket" content="Cricket" />
+
     </div>
   );
 }

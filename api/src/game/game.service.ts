@@ -1,6 +1,6 @@
 import { Injectable, HttpStatus, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository, ObjectID } from 'typeorm';
+import { In, Repository, ObjectID, getMongoManager } from 'typeorm';
 import { GameMode } from '../enums/GameMode';
 import { GameStatus } from '../enums/GameStatus';
 import GameEntity from './game.entity';
@@ -10,7 +10,9 @@ import { GameDTO } from './game.dto';
 import { AddUserInGameDTO } from './addUserInGame.dto';
 import { GamePlayerService } from '../game-player/game-player.service';
 import { CreateGamePlayerDto } from '../game-player/game-player.dto';
+import {getMongoRepository} from "typeorm";
 import { Dependencies } from '@nestjs/common';
+import GamePlayer from '../game-player/game-player.entity';
 
 var ObjectId = require('mongodb').ObjectID;
 
@@ -23,6 +25,8 @@ export class GameService {
     private gameRepository: Repository<GameEntity>,
     @InjectRepository(PlayerEntity)
     private playerRepository: Repository<PlayerEntity>,
+    @InjectRepository(PlayerEntity)
+    private gamePlayerRepository: Repository<GamePlayerEntity>,
     gamePlayerService: GamePlayerService,
   ) {
     this.gamePlayerService = gamePlayerService;
@@ -31,13 +35,17 @@ export class GameService {
   async showAll() {
     return await this.gameRepository.find();
   }
+  
+  async create(gameDto: GameDTO, addUserInGameDTO: AddUserInGameDTO) {
+    gameDto.currentPlayerId = null;
+    gameDto.status = GameStatus.draft;
+    gameDto.createdAt = new Date();
 
-  async create(data: GameDTO) {
-    data.currentPlayerId = null;
-    data.status = GameStatus.draft;
-    data.createdAt = new Date();
-    const game = this.gameRepository.create(data);
-    await this.gameRepository.save(data);
+    this.gameRepository.create(gameDto);
+    const game = await this.gameRepository.save(gameDto);
+
+    this.addPlayersInGame(addUserInGameDTO,  game);
+
     return game;
   }
 
@@ -55,35 +63,44 @@ export class GameService {
     return { deleted: true };
   }
 
-  async getPlayersInGame(id: ObjectID) {
-    const game = await this.gameRepository.findOne({
-      where: { _id: id },
-      relations: ['gamePlayers'],
+  async getGamePlayersInGame(id: string) {
+    const repository = getMongoRepository(GamePlayerEntity);
+    const gamePlayers = await repository.find({  
+      where : { 
+        gameId: { $eq: id }
+      }
     });
-    return game;
+    return gamePlayers;
   }
 
-  async getAllPlayersInGame(id: ObjectID) {
-    const game = await this.gameRepository.findOne({
-      where: { _id: id },
-      relations: ['gamePlayers'],
+  async getPlayersInGame(id: string) {
+    const playerRepository = getMongoRepository(PlayerEntity);
+    const repository = getMongoRepository(GamePlayerEntity);
+    let playersId: string[] = [];
+    const gamePlayers = await repository.find({  
+      where : { 
+        gameId: { $eq: id }
+      }
     });
-    const gamePlayers = game.gamePlayers;
-    let playersId: ObjectID[] = [];
-
-    gamePlayers.map((gamePlayer) => playersId.push(gamePlayer.playerId));
-    const players = await this.playerRepository.find({ id: In(playersId) });
-
+    
+    gamePlayers.map((gamePlayer) => playersId.push(ObjectId(gamePlayer.playerId)));
+    
+    const players = await playerRepository.find({ 
+      where: {
+        _id: {$in: playersId}
+      }
+    })
+    
+    console.log(players);
+    
     return players;
   }
 
-  async addPlayersInGame(name: string, dto: AddUserInGameDTO) {
-    const playersId: ObjectID[] = []; // tableau ID des players
-    dto.players.map(player => {
-      playersId.push(ObjectId(player))
+  async addPlayersInGame(addUserInGameDTO: AddUserInGameDTO, game: GameEntity) {
+    let playersId: ObjectID[] = [];
+    addUserInGameDTO.players.map(id => {
+      playersId.push(ObjectId(id))
     })
-
-    const game = await this.gameRepository.findOne({ where: { name: name } }); // Recup game
 
     let score: number;
 
@@ -98,27 +115,24 @@ export class GameService {
         score = 0;
         break;
     }
-
-    // TODO: Create game player
-    let gamePlayersToAdd: GamePlayerEntity[] = [];
-    playersId.map(async (playerId: ObjectID) => {
-      const gamePlayerDto = new CreateGamePlayerDto();
-      gamePlayerDto.playerId = playerId;
-      gamePlayerDto.gameId = game.id;
-      gamePlayerDto.score = score;
-      gamePlayerDto.remainingShots = 3;
-      gamePlayerDto.rank = null;
-      gamePlayerDto.inGame = false;
-      gamePlayerDto.createdAt = new Date();
-
-      const gamePlayer: GamePlayerEntity = await this.gamePlayerService.create(
-        gamePlayerDto,
-      );
-      gamePlayersToAdd.push(gamePlayer);
-    });
-
-    game.gamePlayers = gamePlayersToAdd;
-
-    this.gameRepository.save(game);
+    
+     let gamePlayersToAdd = [];
+     playersId.map(async (playerId: ObjectID) => {
+       const gamePlayerDto = new CreateGamePlayerDto();
+       gamePlayerDto.playerId = playerId.toString();
+       gamePlayerDto.gameId = game.id.toString();
+       gamePlayerDto.score = score;
+       gamePlayerDto.remainingShot = 3;
+       gamePlayerDto.rank = null;
+       gamePlayerDto.inGame = false;
+       gamePlayerDto.createdAt = new Date();
+ 
+       const gamePlayer = await this.gamePlayerService.create(
+         gamePlayerDto,
+       );
+       gamePlayersToAdd.push(gamePlayer);
+       game.gamePlayers = gamePlayersToAdd;
+       this.gameRepository.update(game.id, game);
+     });
   }
 }

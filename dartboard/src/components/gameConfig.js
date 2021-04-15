@@ -1,5 +1,5 @@
 import { useState, useEffect, React } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, Router, useHistory } from "react-router-dom";
 import {
   Button,
   Form,
@@ -22,11 +22,11 @@ export function GameConfig(props) {
   const [gamePlayers, setGamePlayers] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [gameConfigured, setGameConfigured] = useState(false);
 
   const location = useLocation();
   const pathName = location.pathname.replace("/", "");
   const gameLink = "/game/" + pathName;
+  let history = useHistory();
 
   const handleDelete = (evt, index) => {
     const newPlayers = [...players];
@@ -36,7 +36,7 @@ export function GameConfig(props) {
 
   const fetchData = async () => {
     const result = await axios("http://localhost:3000/players");
-    let playersObj = [...dbPlayers];
+    let playersObj = [];
     result.data.data.map((player) => {
       playersObj.push(player);
     });
@@ -48,9 +48,7 @@ export function GameConfig(props) {
   }, []);
 
   const handleAddPlayer = (player) => {
-    const newPlayers = [...players];
-    newPlayers.push(player);
-    setPlayers(newPlayers);
+    setPlayers((previousPlayers) => [...previousPlayers, player]);
   };
 
   const handleDeletePlayer = (player) => {
@@ -71,28 +69,18 @@ export function GameConfig(props) {
       mode: pathName,
     };
 
-    axios.post("http://localhost:3000/games", game).then((res) => {
-      const playersId = getAllPlayersId();
-      axios
-        .post(`http://localhost:3000/games/${res.data.data.name}/players`, {
-          players: playersId,
-        })
-        // .then((res) => {
-        //   axios
-        //     .get(`http://localhost:3000/games/${res.data.data}/players`)
-        //     .then((res) => {
-        //       // @TODO : récupérer les gameplayers
-        //       setGamePlayers(res.data.data);
-        //     });
-        // })
-        // .then(() => {
-        //   setGameConfigured(true);
-        // })
-        // .catch(function (error) {
-        //   console.log(error);
-        // });
-    }).catch(e => console.log('ERROR : ', e)
-    );
+    const playersId = getAllPlayersId();
+
+    axios.post("http://localhost:3000/games", {game, players: playersId})
+    // .then((res) => {
+    //   return axios.post(
+    //     `http://localhost:3000/games/${res.data.data.name}/players`,
+    //     { players: playersId }
+    //   )
+      .then(res => {
+        history.push(`/game/${res.data.data.id}`)
+      })
+    // }) 
   };
 
   const checkId = (playerId) => {
@@ -133,9 +121,9 @@ export function GameConfig(props) {
 
   const UserList = () => {
     return (
-      <List divided verticalAlign="middle">
-        {dbPlayers.map((player) => (
-          <List.Item>
+      <List divided>
+        {dbPlayers.map((player, index) => (
+          <List.Item key={index}>
             <List.Content floated="right">
               <Button
                 color="red"
@@ -166,74 +154,68 @@ export function GameConfig(props) {
     );
   };
 
-  if (!gameConfigured) {
-    if (dbPlayers.length > 0) {
-      return (
-        <div>
-          <Header h1> {props.title} </Header>
-          <Segment>
-            <List selection>
-              {players.length == 0 && (
-                <Message>
-                  <p>Veuillez ajouter au moins 2 joueurs </p>
-                </Message>
-              )}
+  if (dbPlayers.length > 0) {
+    return (
+      <div>
+        <Header h1> {props.title} </Header>
+        <Segment>
+          <List selection>
+            {players.length == 0 && (
+              <Message>
+                <p>Veuillez ajouter au moins 2 joueurs </p>
+              </Message>
+            )}
 
-              {players.map((player, index) => (
-                <List.Item verticalAlign="bottom">
-                  <List.Content key={player.id} floated="right">
-                    <Button
-                      key={player.id}
-                      color="red"
-                      circular
-                      icon="trash alternate"
-                      verticalAlign="middle"
-                      onClick={(e, index) => handleDelete()}
-                    ></Button>
-                  </List.Content>
-                  <List.Content>
-                    Joueur {index + 1} : {player.name}
-                  </List.Content>
-                </List.Item>
-              ))}
-            </List>
-          </Segment>
+            {players.map((player, index) => (
+              <List.Item key={index}>
+                <List.Content key={player.id} floated="right">
+                  <Button
+                    key={player.id}
+                    color="red"
+                    circular
+                    icon="trash alternate"
+                    onClick={(e, index) => handleDelete()}
+                  ></Button>
+                </List.Content>
+                <List.Content>
+                  Joueur {index + 1} : {player.name}
+                </List.Content>
+              </List.Item>
+            ))}
+          </List>
+        </Segment>
 
-          <Segment>{UserList()}</Segment>
+        <Segment>{UserList()}</Segment>
 
-          <AddPlayerForm
-            open={modalIsOpen}
-            onClose={() => closeModal()}
-            onOpen={() => setModalIsOpen(true)}
-          />
+        <AddPlayerForm
+          open={modalIsOpen}
+          onClose={() => closeModal()}
+          onOpen={() => setModalIsOpen(true)}
+        />
 
-          <Button
-            disabled={checkNumberPlayers()}
-            color="purple"
-            icon="game"
-            content="Jouer"
-            onClick={() => handleCreateGame()}
-          />
-        </div>
-      );
-    } else {
-      return (
-        <>
-          <Header h1> {props.title} </Header>
-          <Message>
-            <p>Veuillez ajouter au moins 2 joueurs </p>
-          </Message>
-          <AddPlayerForm
-            open={modalIsOpen}
-            onClose={() => closeModal()}
-            onOpen={() => setModalIsOpen(true)}
-          />
-        </>
-      );
-    }
+        <Button
+          disabled={checkNumberPlayers()}
+          color="purple"
+          icon="game"
+          content="Jouer"
+          onClick={() => handleCreateGame()}
+        />
+      </div>
+    );
   } else {
     return (
-      <Game title={props.title} players={players} gamePlayers={gamePlayers} />
+      <>
+        <Header h1> {props.title} </Header>
+        <Message>
+          <p>Veuillez ajouter au moins 2 joueurs </p>
+        </Message>
+        <AddPlayerForm
+          open={modalIsOpen}
+          onClose={() => closeModal()}
+          onOpen={() => setModalIsOpen(true)}
+        />
+      </>
     );
   }
 }
+

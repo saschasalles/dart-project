@@ -2,9 +2,9 @@ import { ObjectID } from 'typeorm';
 
 export class CreateGamePlayerDto {
   id: ObjectID;
-  playerId: ObjectID;
-  gameId: ObjectID;
-  remainingShots: number | null;
+  playerId: string;
+  gameId: string;
+  remainingShot: number | null;
   score: number;
   rank: number | null;
   order: number | null;
