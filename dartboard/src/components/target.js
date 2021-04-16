@@ -3,6 +3,10 @@ import dartboard from '../images/dartboard.svg';
 
 
 export default function Target() {
+  const returnValueClicked = (event) => {
+    alert(event.target.attributes.value.value);    
+  }
+
   return(
     <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +45,8 @@ export default function Target() {
             strokeWidth="1.1"
             d="M226.5 0a226.5 226.5 0 11-453 0 226.5 226.5 0 11453 0z"
             opacity="1"
-            onClick={() => alert("Ok boomer")}
+            value="0"
+            onClick={(event) => returnValueClicked(event)}
           ></path>
         </g>
         <g
@@ -53,205 +58,520 @@ export default function Target() {
           strokeOpacity="1"
           strokeWidth="1.1"
         >
-          <path
-            fill="red"
-            d="M170.55 0a170.55 170.55 0 11-341.1 0 170.55 170.55 0 11341.1 0z"
-            opacity="1"
-          ></path>
-          <path
-            fill="#000"
-            d="M161.45 0a161.45 161.45 0 11-322.9 0 161.45 161.45 0 11322.9 0z"
-            opacity="1"
-          ></path>
-          <path
-            fill="red"
-            d="M107.55 0a107.55 107.55 0 11-215.1 0 107.55 107.55 0 11215.1 0z"
-            opacity="1"
-          ></path>
-          <path
-            fill="#000"
-            d="M98.45 0a98.45 98.45 0 11-196.9 0 98.45 98.45 0 11196.9 0z"
-            opacity="1"
-          ></path>
+           <g fill="red" opacity="1">
+            <path
+              d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
+              transform="rotate(-99)"
+              value="40"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
+              transform="rotate(-135)"
+              value="24"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
+              transform="rotate(-171)"
+              value="28"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
+              transform="rotate(153)"
+              value="16"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
+              transform="rotate(117)"
+              value="14"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
+              transform="rotate(81)"
+              value="6"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
+              transform="rotate(45)"
+              value="4"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
+              transform="rotate(9)"
+              value="20"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
+              transform="rotate(-27)"
+              value="26"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
+              transform="rotate(-63)"
+              value="36"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+          </g>
+          <g fill="#000" opacity="1">
+            <path
+              d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
+              transform="rotate(-99)"
+              value="20"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
+              transform="rotate(-135)"
+              value="12"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
+              transform="rotate(-171)"
+              value="14"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
+              transform="rotate(153)"
+              value="8"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
+              transform="rotate(117)"
+              value="7"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
+              transform="rotate(81)"
+              value="3"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
+              transform="rotate(45)"
+              value="2"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
+              transform="rotate(9)"
+              value="10"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
+              transform="rotate(-27)"
+              value="13"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
+              transform="rotate(-63)"
+              value="18"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+          </g>
+          <g fill="red" opacity="1">
+            <path
+              d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
+              transform="rotate(-99)"
+              value="60"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
+              transform="rotate(-135)"
+              value="36"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
+              transform="rotate(-171)"
+              value="42"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
+              transform="rotate(153)"
+              value="24"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
+              transform="rotate(117)"
+              value="21"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
+              transform="rotate(81)"
+              value="9"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
+              transform="rotate(45)"
+              value="6"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
+              transform="rotate(9)"
+              value="30"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
+              transform="rotate(-27)"
+              value="39"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
+              transform="rotate(-63)"
+              value="54"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+          </g>
+          <g fill="#000" opacity="1">
+            <path
+              d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
+              transform="rotate(-99)"
+              value="20"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
+              transform="rotate(-135)"
+              value="12"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
+              transform="rotate(-171)"
+              value="14"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
+              transform="rotate(153)"
+              value="8"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
+              transform="rotate(117)"
+              value="7"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
+              transform="rotate(81)"
+              value="3"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
+              transform="rotate(45)"
+              value="2"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
+              transform="rotate(9)"
+              value="10"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
+              transform="rotate(-27)"
+              value="13"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+            <path
+              d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
+              transform="rotate(-63)"
+              value="18"
+              onClick={(event) => returnValueClicked(event)}
+            ></path>
+          </g>
+
+
+
+
+
           <g fill="#00a000" opacity="1">
             <path
               d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
               transform="rotate(-117)"
-              onClick={() => alert("Ok boomer")}
+              value="10"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
               transform="rotate(-153)"
+              value="18"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
               transform="rotate(171)"
+              value="22"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
               transform="rotate(135)"
+              value="32"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
               transform="rotate(99)"
+              value="38"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
               transform="rotate(63)"
+              value="34"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
               transform="rotate(27)"
+              value="30"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
               transform="rotate(-9)"
+              value="12"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
               transform="rotate(-45)"
+              value="8"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M170.55 0a170.55 170.55 0 01-8.347 52.703L0 0z"
               transform="rotate(-81)"
+              value="2"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
           </g>
           <g fill="#e7e4c7" opacity="1">
             <path
               d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
               transform="rotate(-117)"
+              value="5"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
               transform="rotate(-153)"
+              value="9"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
               transform="rotate(171)"
+              value="11"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
               transform="rotate(135)"
+              value="16"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
               transform="rotate(99)"
+              value="19"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
               transform="rotate(63)"
+              value="17"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
               transform="rotate(27)"
+              value="15"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
               transform="rotate(-9)"
+              value="6"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
               transform="rotate(-45)"
+              value="4"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M161.45 0a161.45 161.45 0 01-7.902 49.89L0 0z"
               transform="rotate(-81)"
+              value="1"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
           </g>
           <g fill="#00a000" opacity="1">
             <path
               d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
               transform="rotate(-117)"
+              value="15"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
               transform="rotate(-153)"
+              value="27"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
               transform="rotate(171)"
+              value="33"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
               transform="rotate(135)"
+              value="48"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
               transform="rotate(99)"
+              value="57"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
               transform="rotate(63)"
+              value="51"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
               transform="rotate(27)"
+              value="45"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
               transform="rotate(-9)"
+              value="18"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
               transform="rotate(-45)"
+              value="12"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M107.55 0a107.55 107.55 0 01-5.264 33.235L0 0z"
               transform="rotate(-81)"
+              value="3"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
           </g>
           <g fill="#e7e4c7" opacity="1">
             <path
               d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
               transform="rotate(-117)"
-              onClick={() => alert("Ok boomer")}
+              value="5"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
               transform="rotate(-153)"
+              value="9"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
               transform="rotate(171)"
+              value="11"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
               transform="rotate(135)"
+              value="16"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
               transform="rotate(99)"
+              value="19"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
               transform="rotate(63)"
+              value="17"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
               transform="rotate(27)"
+              value="15"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
               transform="rotate(-9)"
+              value="6"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
               transform="rotate(-45)"
+              value="4"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
             <path
               d="M98.45 0a98.45 98.45 0 01-4.818 30.423L0 0z"
               transform="rotate(-81)"
+              value="1"
+              onClick={(event) => returnValueClicked(event)}
             ></path>
           </g>
           <path
             fill="#00a000"
             d="M16.45 0a16.45 16.45 0 11-32.9 0 16.45 16.45 0 1132.9 0z"
             opacity="1"
+            value="25"
+            onClick={(event) => returnValueClicked(event)}
           ></path>
           <path
             fill="red"
             d="M6.9 0A6.9 6.9 0 11-6.9 0 6.9 6.9 0 116.9 0z"
             opacity="1"
+            value="50"
+            onClick={(event) => returnValueClicked(event)}
           ></path>
         </g>
         <g
