@@ -4,7 +4,8 @@ import Game from '../game/game.entity';
 
 @Entity('gamePlayer')
 export default class GamePlayer {
-  @ObjectIdColumn() id: ObjectID
+  @ObjectIdColumn() 
+  id: ObjectID;
   
   @Column()
   playerId: string;
@@ -36,6 +37,6 @@ export default class GamePlayer {
   @Column()
   createdAt: Date;
 
-  // @ManyToOne(() => Game, (game: Game) => game.gamePlayers)
-  // public game: Game;
+  @ManyToOne(() => Game, (game: Game) => game.gamePlayers)
+  game: Game;
 }

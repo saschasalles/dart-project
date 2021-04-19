@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { Button, Icon, Image, Modal, Form } from "semantic-ui-react";
+import { Button, Modal, Form } from "semantic-ui-react";
 import axios from "axios";
 
 const initialValues = {
@@ -13,7 +13,7 @@ export const AddPlayerForm = (props) => {
   const handleAddPlayer = (player) => {
     axios
       .post("http://localhost:3000/players", player)
-      .then((res) => {
+      .then(() => {
         props.onClose()
       })
       .catch((err) => {
@@ -32,10 +32,6 @@ export const AddPlayerForm = (props) => {
 
   const handleSubmit = (evt) => {
     handleAddPlayer(values);
-  };
-
-  const resetInitialValue = () => {
-    setValues({ name: "", email: "" });
   };
 
   return (

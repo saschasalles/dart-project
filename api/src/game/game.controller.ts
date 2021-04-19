@@ -12,9 +12,10 @@ import {
 import { GameService } from './game.service'
 import { GameDTO } from './game.dto';
 import { AddUserInGameDTO } from './addUserInGame.dto';
+import GamePlayer from '../game-player/game-player.entity';
+import { AddGamePlayerInGameDTO } from './addGamePlayerInGame.dto';
 import { ObjectID } from 'typeorm';
 const { ObjectId } = require('mongodb');
-import { ParseArrayPipe } from '@nestjs/common';
 
 
 
@@ -82,6 +83,15 @@ export class GameController {
     return {
       statusCode: HttpStatus.OK,
       data: await this.GameService.getGamePlayersInGame(id),
+    };
+  }
+  
+  @Patch(':id/gameplayers')
+  async updateGamePlayersInGame(@Param('id') id: string, @Body() addGamePlayerInGameDTO: GamePlayer[]) {
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Game added successfully',
+      data: await this.GameService.updateGamePlayersInGame(id, addGamePlayerInGameDTO)
     };
   }
 }

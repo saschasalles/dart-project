@@ -10,6 +10,7 @@ import { GameDTO } from './game.dto';
 import { AddUserInGameDTO } from './addUserInGame.dto';
 import { GamePlayerService } from '../game-player/game-player.service';
 import { CreateGamePlayerDto } from '../game-player/game-player.dto';
+import { AddGamePlayerInGameDTO } from '../game/addGamePlayerInGame.dto';
 import {getMongoRepository} from "typeorm";
 import { Dependencies } from '@nestjs/common';
 import GamePlayer from '../game-player/game-player.entity';
@@ -44,7 +45,7 @@ export class GameService {
     this.gameRepository.create(gameDto);
     const game = await this.gameRepository.save(gameDto);
 
-    this.addPlayersInGame(addUserInGameDTO,  game);
+    this.addPlayersInGame(addUserInGameDTO, game);
 
     return game;
   }
@@ -90,9 +91,6 @@ export class GameService {
         _id: {$in: playersId}
       }
     })
-    
-    console.log(players);
-    
     return players;
   }
 
@@ -124,7 +122,7 @@ export class GameService {
        gamePlayerDto.score = score;
        gamePlayerDto.remainingShot = 3;
        gamePlayerDto.rank = null;
-       gamePlayerDto.inGame = false;
+       gamePlayerDto.inGame = true;
        gamePlayerDto.createdAt = new Date();
  
        const gamePlayer = await this.gamePlayerService.create(
@@ -134,5 +132,15 @@ export class GameService {
        game.gamePlayers = gamePlayersToAdd;
        this.gameRepository.update(game.id, game);
      });
+  }
+  
+  async updateGamePlayersInGame(id: string, data: Partial<GamePlayer[]>) {
+    const _id = ObjectId(id);
+    let game = await this.gameRepository.findOne({ where: { _id: _id} });
+    
+    game.gamePlayers = data;
+    
+    await this.gameRepository.update(game.id, game);
+    // return await this.gamePlayerRepository.findOne({ id });
   }
 }

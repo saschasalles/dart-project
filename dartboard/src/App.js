@@ -1,6 +1,5 @@
 import "./App.css";
-import { Container, Header, Segment } from "semantic-ui-react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/home";
 import Game from "./pages/game";
 import Layout from "./components/layout";

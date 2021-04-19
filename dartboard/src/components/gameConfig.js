@@ -1,31 +1,27 @@
 import { useState, useEffect, React } from "react";
-import { useLocation, Link, Router, useHistory } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import {
   Button,
-  Form,
   List,
-  Dimmer,
-  Loader,
   Segment,
   Message,
-  Confirm,
   Header,
 } from "semantic-ui-react";
+import { Container } from 'semantic-ui-react';
 import { AddPlayerForm } from "./addPlayerForm";
-import Game from "../pages/game";
 
 import axios from "axios";
 
 export function GameConfig(props) {
   const [players, setPlayers] = useState([]);
   const [dbPlayers, setDbPlayers] = useState([]);
-  const [gamePlayers, setGamePlayers] = useState([]);
+  // const [gamePlayers, setGamePlayers] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [confirmOpen, setConfirmOpen] = useState(false);
+  // const [confirmOpen, setConfirmOpen] = useState(false);
 
   const location = useLocation();
   const pathName = location.pathname.replace("/", "");
-  const gameLink = "/game/" + pathName;
+  // const gameLink = "/game/" + pathName;
   let history = useHistory();
 
   const handleDelete = (evt, index) => {
@@ -55,7 +51,7 @@ export function GameConfig(props) {
     const newPlayers = dbPlayers.filter((play) => play.id !== player.id);
     axios
       .delete(`http://localhost:3000/players/${player.id}`)
-      .then((res) => {
+      .then(() => {
         setDbPlayers(newPlayers);
       })
       .catch((err) => {
@@ -72,21 +68,15 @@ export function GameConfig(props) {
     const playersId = getAllPlayersId();
 
     axios.post("http://localhost:3000/games", {game, players: playersId})
-    // .then((res) => {
-    //   return axios.post(
-    //     `http://localhost:3000/games/${res.data.data.name}/players`,
-    //     { players: playersId }
-    //   )
       .then(res => {
         history.push(`/game/${res.data.data.id}`)
       })
-    // }) 
   };
 
   const checkId = (playerId) => {
     let res = false;
     players.map((player) => {
-      if (player.id == playerId) {
+      if (player.id === playerId) {
         res = true;
       }
     });
@@ -106,16 +96,22 @@ export function GameConfig(props) {
     document.location.reload();
   };
 
-  const deletePlayer = (player) => {
-    handleDeletePlayer(player);
-    setConfirmOpen(false);
-  };
-
   const getAllPlayersId = () => {
     let playersId = [];
+    
     players.map((player) => {
       playersId.push(player.id);
     });
+    
+    var currentIndex = playersId.length, temporaryValue, randomIndex;
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = playersId[currentIndex];
+      playersId[currentIndex] = playersId[randomIndex];
+      playersId[randomIndex] = temporaryValue;
+    }
+    
     return playersId;
   };
 
@@ -131,13 +127,6 @@ export function GameConfig(props) {
                 circular
                 onClick={() => handleDeletePlayer(player)}
               >
-                {/* <Confirm
-                open={confirmOpen}
-                cancelButton='Never mind'
-                confirmButton="Let's do it"
-                onCancel={setConfirmOpen(false)}
-                onConfirm={() => deletePlayer(player)}
-              /> */}
               </Button>
               <Button
                 disabled={checkId(player.id)}
@@ -156,11 +145,11 @@ export function GameConfig(props) {
 
   if (dbPlayers.length > 0) {
     return (
-      <div>
+      <Container>
         <Header h1> {props.title} </Header>
         <Segment>
           <List selection>
-            {players.length == 0 && (
+            {players.length === 0 && (
               <Message>
                 <p>Veuillez ajouter au moins 2 joueurs </p>
               </Message>
@@ -200,11 +189,11 @@ export function GameConfig(props) {
           content="Jouer"
           onClick={() => handleCreateGame()}
         />
-      </div>
+      </Container>
     );
   } else {
     return (
-      <>
+      <Container>
         <Header h1> {props.title} </Header>
         <Message>
           <p>Veuillez ajouter au moins 2 joueurs </p>
@@ -214,7 +203,7 @@ export function GameConfig(props) {
           onClose={() => closeModal()}
           onOpen={() => setModalIsOpen(true)}
         />
-      </>
+      </Container>
     );
   }
 }

@@ -2,7 +2,8 @@ import { Entity, Column, ObjectIdColumn, ObjectID } from 'typeorm';
 
 @Entity('player')
 export default class PlayerEntity {
-	@ObjectIdColumn() id: ObjectID
+	@ObjectIdColumn() 
+    id: ObjectID;
 
     @Column('varchar', { length: 500, unique: true})
     name: string

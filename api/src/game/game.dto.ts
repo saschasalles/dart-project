@@ -6,7 +6,7 @@ import GamePlayer from 'src/game-player/game-player.entity';
 export interface GameDTO {
   mode: GameMode;
   name: string;
-  currentPlayerId: ObjectID | null;
+  currentPlayerId: string | null;
   status: GameStatus;
   createdAt: Date;
   gamePlayers: GamePlayer[] | null;

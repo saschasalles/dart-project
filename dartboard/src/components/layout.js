@@ -1,15 +1,10 @@
 import {
   Container,
-  Divider,
-  Dropdown,
-  Grid,
   Header,
-  Image,
-  List,
   Menu,
   Segment,
 } from "semantic-ui-react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Layout({ children }) {
   return (
@@ -28,7 +23,7 @@ export default function Layout({ children }) {
         </Container>
       </Menu>
 
-      <Container text style={{ marginTop: "7em" }}>
+      <Container fluid style={{ marginTop: "7em" }}>
         {children}
       </Container>
 

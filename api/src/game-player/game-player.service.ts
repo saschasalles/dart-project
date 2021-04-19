@@ -12,10 +12,19 @@ export class GamePlayerService {
     private gamePlayerRepository: Repository<GamePlayerEntity>,
   ) {}
 
+  async showAll() {
+    return await this.gamePlayerRepository.find();
+  }
+
   async create(createGamePlayerDto: CreateGamePlayerDto) {
     const gamePlayer = this.gamePlayerRepository.create(createGamePlayerDto);
     await this.gamePlayerRepository.save(createGamePlayerDto);
     return gamePlayer;
+  }
+
+  async update(id: string, data: Partial<CreateGamePlayerDto>) {
+    await this.gamePlayerRepository.update({ id }, data);
+    return await this.gamePlayerRepository.findOne({ id });
   }
 
   findAll() {
@@ -29,4 +38,7 @@ export class GamePlayerService {
   remove(id: ObjectID) {
     return `This action removes a #${id} gamePlayer`;
   }
+
+
+  
 }
