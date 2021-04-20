@@ -100,9 +100,7 @@ export default function Game() {
     getGame()
     .then(res => {
       if (res.data.data.currentPlayerId) {        
-        endedOrderGamePlayer.map(gamePlayer => {
-          console.log(rank);
-          
+        endedOrderGamePlayer.map(gamePlayer => {          
           if (gamePlayer.rank > rank) {
             console.log(gamePlayer);
             setRank(gamePlayer.rank)
@@ -142,7 +140,6 @@ export default function Game() {
 
   return (
     <Container>
-      <Header h1>Titre</Header>
       <Grid columns={2}>
         <Grid.Row>
           <Grid.Column>
