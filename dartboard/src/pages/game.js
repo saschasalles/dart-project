@@ -11,14 +11,16 @@ import { updateGamePlayer, updateCurrentPlayerGame, updateGamePlayers } from "..
 
 export default function Game() {
   let { id } = useParams();
-  const [gamePlayers, setGamePlayers] = useState([]);
+  const [gamePlayers, setGamePlayers] = useState([])
   const [players, setPlayers] = useState([]);
   const [currentPlayer, setCurrentPlayer] = useState({})
+  const [endedGamePlayers, setEndedGamePlayers] = useState([])
+  const [rank, setRank] = useState(0)
 
   useEffect(() => {
     axios.all([
       axios.get(`http://localhost:3000/games/${id}/players`),
-      axios.get(`http://localhost:3000/game-player`)
+      axios.get(`http://localhost:3000/games/${id}/gameplayers`)
     ])
     .then(axios.spread((firstResponse, secondResponse) => {
       setPlayers(firstResponse.data.data);
@@ -28,15 +30,15 @@ export default function Game() {
   }, []);
 
   const getGamePlayers = () => {
-    return axios.get(`http://localhost:3000/game-player`);
+    return axios.get(`http://localhost:3000/games/${id}/gameplayers`)
   }
 
   const getPlayers = () => {
-    return axios.get(`http://localhost:3000/games/${id}/players`);
+    return axios.get(`http://localhost:3000/games/${id}/players`)
   }
 
   const getGame = () => {
-    return axios.get(`http://localhost:3000/games/${id}`);
+    return axios.get(`http://localhost:3000/games/${id}`)
   }
 
   const handleCellClicked = (value) => {
@@ -45,8 +47,8 @@ export default function Game() {
       // si score +1 = valeur flechette => incrémente score
 
     let currentPlayerInfos = {...currentPlayer};
-    currentPlayerInfos.score = handleScore(value.cellValue.value, currentPlayerInfos.score);
-    currentPlayerInfos.remainingShot = currentPlayer.remainingShot - 1;
+    currentPlayerInfos.score = handleScore(value.cellValue.value, currentPlayerInfos.score)
+    currentPlayerInfos.remainingShot = currentPlayer.remainingShot - 1
     setCurrentPlayer(currentPlayerInfos);
     updateGamePlayer(currentPlayerInfos);
     
@@ -54,38 +56,59 @@ export default function Game() {
     
     gamePlayers.map(gamePlayer => {
       if (gamePlayer.playerId === currentPlayerInfos.playerId) {
-        newGamePlayers.push(currentPlayerInfos);
-        if (currentPlayerInfos.remainingShot < 1) {
-          currentPlayerInfos.remainingShot = 3
-          // Todo sync les 2 funcs avec un handleCurrentPlayerId
-          updateGameCurrentPlayerId(gamePlayers);
-          updateGamePlayer(currentPlayerInfos);
+        if (currentPlayerInfos.score === 20) {
+          alert('tu as fini la partie')
+          currentPlayerInfos.inGame = false
+          currentPlayerInfos.rank = rank + 1
+          setRank(rank + 1)
+          updateGameCurrentPlayerId(gamePlayers)
+          updateGamePlayer(currentPlayerInfos)
+          setEndedGamePlayers((previousPlayers) => [...previousPlayers, currentPlayerInfos])
+        } else {
+          if (currentPlayerInfos.remainingShot == 0) {
+            currentPlayerInfos.remainingShot = 3
+            updateGameCurrentPlayerId(gamePlayers)
+            updateGamePlayer(currentPlayerInfos)
+          } 
         }
+        newGamePlayers.push(currentPlayerInfos)
       } else {
-        newGamePlayers.push(gamePlayer);
+        newGamePlayers.push(gamePlayer)
       }
     })
+    
     updateGamePlayers(id, newGamePlayers);
     setGamePlayers(newGamePlayers);
   }
 
   const initGame = (array) => {
-    updateGameStatus('started');
-    getGamePlayers()
-    .then(res => { 
-      let newGamePlayers = [];
-      res.data.data.map(gamePlayer => {
-        if (gamePlayer.gameId === id) {
-          newGamePlayers.push(gamePlayer);
-        }
-      })
-      
-      setGamePlayers(newGamePlayers);      
+    let orderGamePlayers = []
+    let endedOrderGamePlayer = []
+    
+    array.map(gamePlayer => {
+      if (gamePlayer.inGame) {
+        orderGamePlayers.splice(gamePlayer.order - 1, 0, gamePlayer)
+      } else {
+        endedOrderGamePlayer.push(gamePlayer)
+      }
     })
+    updateGameStatus('started');
+
+    setGamePlayers(orderGamePlayers)
+    setEndedGamePlayers(endedOrderGamePlayer)
+    
     getGame()
     .then(res => {
-      if (res.data.data.currentPlayerId) {
-        array.map(gamePlayer => {
+      if (res.data.data.currentPlayerId) {        
+        endedOrderGamePlayer.map(gamePlayer => {
+          console.log(rank);
+          
+          if (gamePlayer.rank > rank) {
+            console.log(gamePlayer);
+            setRank(gamePlayer.rank)
+          }
+        })
+        orderGamePlayers.map(gamePlayer => {
           if (res.data.data.currentPlayerId === gamePlayer.id) {
             setCurrentPlayer(gamePlayer)
             updateCurrentPlayerGame(id, gamePlayer.id)
@@ -103,7 +126,7 @@ export default function Game() {
       status : status
     }
     axios.patch(`http://localhost:3000/games/${id}`, newStatus)
-    .catch(e => { console.log('ERROR patch update game status : ', e);
+    .catch(e => { console.log('ERROR patch update game status : ', e)
     });
   }
   
@@ -112,7 +135,7 @@ export default function Game() {
     if (gamePlayers.indexOf(currentPlayer) !== gamePlayers.length - 1) {
       index = gamePlayers.indexOf(currentPlayer) + 1
     }
-    
+
     setCurrentPlayer(gamePlayersArray[index])
     updateCurrentPlayerGame(id, gamePlayersArray[index].id)
   }
@@ -130,14 +153,32 @@ export default function Game() {
             {gamePlayers.map((gamePlayer, index) =>
               players.map((player) => {
                 return (
-                  player.id == gamePlayer.playerId && (
+                  player.id == gamePlayer.playerId && gamePlayer.inGame && (
                     <PlayerCard
+                      inGame={true}
                       color={gamePlayer.playerId == currentPlayer.playerId ? 'green' : 'red'}
                       key={index}
                       playerName={player.name}
-                      playerTurn="you"
                       score={gamePlayer.score}
                       remainingShot={gamePlayer.remainingShot}
+                    />
+                  )
+                );
+              })
+            )}
+            </Card.Group>
+            <hr/>
+            <Card.Group itemsPerRow={3}>
+            {endedGamePlayers.map((gamePlayer, index) =>
+              players.map((player) => {
+                return (
+                  player.id == gamePlayer.playerId && (
+                    <PlayerCard
+                      inGame={false}
+                      color={'yellow'}
+                      key={index}
+                      playerName={player.name}
+                      rank={gamePlayer.rank}
                     />
                   )
                 );

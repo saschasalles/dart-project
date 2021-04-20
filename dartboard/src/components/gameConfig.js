@@ -69,7 +69,7 @@ export function GameConfig(props) {
 
     axios.post("http://localhost:3000/games", {game, players: playersId})
       .then(res => {
-        history.push(`/game/${res.data.data.id}`)
+        history.push(`/games/${res.data.data.id}`)
       })
   };
 
@@ -111,6 +111,7 @@ export function GameConfig(props) {
       playersId[currentIndex] = playersId[randomIndex];
       playersId[randomIndex] = temporaryValue;
     }
+    console.log(playersId);
     
     return playersId;
   };

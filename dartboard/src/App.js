@@ -24,7 +24,7 @@ function App() {
               <GameConfig title="Cricket" />
             </Route>
 
-            <Route path="/game/:id">
+            <Route path="/games/:id">
               <Game />
             </Route>
           </Switch>

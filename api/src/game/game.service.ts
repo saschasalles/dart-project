@@ -104,7 +104,7 @@ export class GameService {
 
     switch (game.mode) {
       case 'around-the-world' || 'crickets':
-        score = 0;
+        score = 18;
         break;
       case '301':
         score = 301;
@@ -114,24 +114,27 @@ export class GameService {
         break;
     }
     
-     let gamePlayersToAdd = [];
-     playersId.map(async (playerId: ObjectID) => {
-       const gamePlayerDto = new CreateGamePlayerDto();
-       gamePlayerDto.playerId = playerId.toString();
-       gamePlayerDto.gameId = game.id.toString();
-       gamePlayerDto.score = score;
-       gamePlayerDto.remainingShot = 3;
-       gamePlayerDto.rank = null;
-       gamePlayerDto.inGame = true;
-       gamePlayerDto.createdAt = new Date();
- 
-       const gamePlayer = await this.gamePlayerService.create(
-         gamePlayerDto,
-       );
-       gamePlayersToAdd.push(gamePlayer);
-       game.gamePlayers = gamePlayersToAdd;
-       this.gameRepository.update(game.id, game);
-     });
+    let gamePlayersToAdd = [];
+    console.log(playersId);
+    
+    playersId.map(async (playerId: ObjectID, index) => {
+      const gamePlayerDto = new CreateGamePlayerDto();
+      gamePlayerDto.playerId = playerId.toString();
+      gamePlayerDto.gameId = game.id.toString();
+      gamePlayerDto.score = score;
+      gamePlayerDto.remainingShot = 3;
+      gamePlayerDto.rank = null;
+      gamePlayerDto.order = index + 1;
+      gamePlayerDto.inGame = true;
+      gamePlayerDto.createdAt = new Date();
+
+      const gamePlayer = await this.gamePlayerService.create(
+        gamePlayerDto,
+      );
+      gamePlayersToAdd.push(gamePlayer);
+      game.gamePlayers = gamePlayersToAdd;
+      this.gameRepository.update(game.id, game);
+    });
   }
   
   async updateGamePlayersInGame(id: string, data: Partial<GamePlayer[]>) {
